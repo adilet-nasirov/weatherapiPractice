@@ -24,18 +24,12 @@ function App() {
       `${api.base}weather?q=${selectedCity}&units=metric&APPID=${api.key}`
     );
     const data = await responce.json();
-    // console.log(data);
     setSelectedData(data);
   };
   useEffect(() => {
     fetchData();
   }, [selectedCity]);
-  // console.log(selectedData);
-  /*create a fuction to call the api*/
-  /*here you have a model of the api*/
-  /* `${api.base}weather?q=${selectedCity}&units=metric&APPID=${api.key}`*/
   const onChange = (e) => {
-    // console.log(e.target.value);
     setSelectedCity(e.target.value);
   };
   return (
@@ -44,7 +38,6 @@ function App() {
         <main>
           <div className="top">
             <div className="location">{selectedCity}</div>
-            {/* render The city*/}
             <div>
               <div className="temp">
                 <h2>{selectedData.main.temp} &deg;C</h2>
@@ -57,9 +50,6 @@ function App() {
             </div>
           </div>
           <div className="select-area">
-            {/* {cities[0]} */}
-            {/* create a selector to show the cities
-            on change you need to update your selectedCity */}
             <select className="custom-select" value="value" onChange={onChange}>
               {
                 /* we need to map our cities in order to show the options */
@@ -67,8 +57,6 @@ function App() {
                   return <option key={`abc${index}`}>{city}</option>;
                 })
               }
-
-              {/* <option></option> */}
             </select>
             <br />
           </div>
