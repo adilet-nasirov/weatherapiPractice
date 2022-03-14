@@ -1,61 +1,74 @@
-import axios from "axios";
+// import axios from "axios";
 import { useState, useEffect } from "react";
 import "./app.css";
-/*this object will have your keys and the base urs*/
-/* please get your key from https://home.openweathermap.org/users/sign_up */
 const api = {
-  key: "",
+  key: "69dfae742d38c6fd4cdf34760b0e3b91",
   base: "https://api.openweathermap.org/data/2.5/",
 };
-
 function App() {
-  const cities = ["Select a City", "Bishkek", "california", "Sonsonate"];
-  {
-    /*you can add more cities here*/
-  }
-
+  const cities = [
+    "Select a city",
+    "Seattle",
+    "Bishkek",
+    "California",
+    "Sonsonate",
+  ];
   // im giving you one useState that is with the start value of the cities index[1]
   const [selectedCity, setSelectedCity] = useState(cities[1]);
   // maybe after calling the API in use effect you will need to save the information in another useState
   // like weather
+  const [selectedData, setSelectedData] = useState([]);
 
-  // remeber every time the city changes you need to call the api with the new data
-  //here you will write your useEffect
-
+  const fetchData = async () => {
+    const responce = await fetch(
+      `${api.base}weather?q=${selectedCity}&units=metric&APPID=${api.key}`
+    );
+    const data = await responce.json();
+    // console.log(data);
+    setSelectedData(data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, [selectedCity]);
+  // console.log(selectedData);
   /*create a fuction to call the api*/
-  /* here you have a model of the api*/
+  /*here you have a model of the api*/
   /* `${api.base}weather?q=${selectedCity}&units=metric&APPID=${api.key}`*/
-
-  // here is needed to filter the data that you aredy got from your API
-  //
-  // HINT !!!! maybe when you call the API the will be empty and you will have an error
+  const onChange = (e) => {
+    // console.log(e.target.value);
+    setSelectedCity(e.target.value);
+  };
   return (
     <div className="container warm">
       <div className=" app warm">
         <main>
           <div className="top">
-            <div className="location">{}</div>
+            <div className="location">{selectedCity}</div>
             {/* render The city*/}
             <div>
               <div className="temp">
-                <h2>{}</h2> {/*render the temperature*/}
+                <h2>{selectedData.main.temp} &deg;C</h2>
               </div>
               <div>
                 <div className="situation">
-                  <h3>{}</h3> {/*render Situation*/}
+                  <h3>{selectedData.weather[0].main}</h3>
                 </div>
               </div>
             </div>
           </div>
           <div className="select-area">
-            {" "}
-            {/*create a selector to show the cities
-            on change you need to update your selectedCity
-*/}
-            <select className="custom-select" value="value" onChange="onchange">
-              {/* we need to map our cities in order to show the options */}
+            {/* {cities[0]} */}
+            {/* create a selector to show the cities
+            on change you need to update your selectedCity */}
+            <select className="custom-select" value="value" onChange={onChange}>
+              {
+                /* we need to map our cities in order to show the options */
+                cities.map((city, index) => {
+                  return <option key={`abc${index}`}>{city}</option>;
+                })
+              }
 
-              <option></option>
+              {/* <option></option> */}
             </select>
             <br />
           </div>
